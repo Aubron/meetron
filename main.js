@@ -11,8 +11,10 @@ function createWindow () {
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js')
-    }
+    },
+    alwaysOnTop: true,
   })
+  mainWindow.setMenu(null);
 
   // and load the index.html of the app.
   //mainWindow.loadURL(`https://meet.google.com`);
@@ -50,7 +52,11 @@ app.on('ready', () => {
     mainWindow.webContents?.send('toggleMute')
   })
 
-  if (!ret) {
+  const ret2 = globalShortcut.register('Alt+C', () => {
+    mainWindow.webContents?.send('endCall')
+  })
+
+  if (!ret || !ret2) {
     console.log('registration failed')
   }
 
@@ -61,6 +67,7 @@ app.on('ready', () => {
 app.on('will-quit', () => {
   // Unregister a shortcut.
   globalShortcut.unregister('Alt+X')
+  globalShortcut.unregister('Alt+C')
 
   // Unregister all shortcuts.
   globalShortcut.unregisterAll()

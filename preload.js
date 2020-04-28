@@ -19,4 +19,13 @@ window.addEventListener('load',() => {
     mute = !mute
     document.querySelector(micButtonSelector(selector))?.click();
   })
+  ipcRenderer.on('endCall', (event, arg) => {
+    document.querySelector('[data-tooltip="Leave call"]').click()
+  })
+
+  //hide title bar
+  setInterval(() => {
+    document.querySelector('[aria-label="Show participant options"]').parentElement.style.display = "none"
+    document.querySelector('[data-meeting-title]').parentElement.parentElement.style.display = "none"
+  },5000)
 })
